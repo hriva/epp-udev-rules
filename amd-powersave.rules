@@ -1,2 +1,2 @@
-SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/bin/chamd-power.sh true"
+SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/bin/chamd-balance.sh true"
 SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/bin/chamd-performance.sh false"
