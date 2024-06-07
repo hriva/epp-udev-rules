@@ -1,0 +1,2 @@
+SUBSYSTEM=="power_supply", ATTR{online}=="0", RUN+="/usr/bin/chamd-capfreq.sh true"
+SUBSYSTEM=="power_supply", ATTR{online}=="1", RUN+="/usr/bin/chamd-maxfreq.sh false"
