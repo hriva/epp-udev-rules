@@ -1,0 +1,56 @@
+#!/usr/bin/env python3
+import dbus
+import dbus.mainloop.glib
+from gi.repository import GLib
+import subprocess
+
+# Mapping power profiles to EPP values
+EPP_MAPPING = {"power-saver": "power", "balanced": "balance_power"}
+
+
+def set_epp(preference):
+    """
+    Sets the energy performance preference (EPP) using echo and tee.
+    """
+    command = f"echo {preference} | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference"
+    try:
+        subprocess.run(command, shell=True, check=True, executable="/bin/bash")
+        print(f"EPP set to '{preference}'.")
+    except subprocess.CalledProcessError as e:
+        print(f"Failed to set EPP to '{preference}':", e)
+
+
+def handle_profile_changed(interface_name, changed_properties, invalidated_properties):
+    """
+    DBus signal callback for power profile changes.
+    """
+    if "ActiveProfile" in changed_properties:
+        new_profile = changed_properties["ActiveProfile"]
+        print(f"Power profile changed to: {new_profile}")
+
+        if new_profile in EPP_MAPPING:
+            set_epp(EPP_MAPPING[new_profile])
+        else:
+            print("No action needed.")
+
+
+def main():
+    # Set up the main loop for DBus signal handling
+    dbus.mainloop.glib.DBusGMainLoop(set_as_default=True)
+    bus = dbus.SystemBus()
+
+    # Subscribe to the PropertiesChanged signal on net.hadess.PowerProfiles
+    bus.add_signal_receiver(
+        handle_profile_changed,
+        signal_name="PropertiesChanged",
+        dbus_interface="org.freedesktop.DBus.Properties",
+        path="/net/hadess/PowerProfiles",
+    )
+
+    print("Listening for power profile DBus signals...")
+    loop = GLib.MainLoop()
+    loop.run()
+
+
+if __name__ == "__main__":
+    main()
