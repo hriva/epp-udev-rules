@@ -1,4 +1,5 @@
 #!/usr/bin/env python3
+# vi:ft=py
 import dbus
 import dbus.mainloop.glib
 from gi.repository import GLib
@@ -12,9 +13,9 @@ def set_epp(preference):
     """
     Sets the energy performance preference (EPP) using echo and tee.
     """
-    command = f"echo {preference} | tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference"
+    command = f"echo {preference} | sudo tee /sys/devices/system/cpu/cpufreq/policy*/energy_performance_preference"
     try:
-        subprocess.run(command, shell=True, check=True, executable="/bin/bash")
+        subprocess.run(command, shell=True, check=True, executable="/bin/bash", stdout=subprocess.DEVNULL)
         print(f"EPP set to '{preference}'.")
     except subprocess.CalledProcessError as e:
         print(f"Failed to set EPP to '{preference}':", e)

@@ -4,7 +4,7 @@ After=dbus.service
 
 [Service]
 Type=simple
-ExecStart=/usr/local/bin/epp_profile_switcher.py
+ExecStart=/usr/local/libexec/epp-profile-switcher
 Restart=on-failure
 StandardOutput=journal
 StandardError=journal
