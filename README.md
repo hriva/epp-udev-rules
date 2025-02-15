@@ -10,8 +10,8 @@ Alternatively, it works with `tuned` but requires `tuned-ppd` daemon to be compa
 
 ## Install
 ```sh
-sudo cp epp-profile-switcher /usr/local/libexec
-sudo cp epp-profile-switcher.service /etc/systemd/system/
+sudo cp libexec/epp-profile-switcher /usr/local/libexec
+sudo cp systemd/epp-profile-switcher.service /etc/systemd/system/
 sudo systemctl daemon-reload
 sudo systemctl enable --now epp-profile-switcher.service
 
