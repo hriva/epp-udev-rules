@@ -1,3 +1,6 @@
+> [!WARNING]
+> Archived. Further code will be moved to [power-manager](https://github.com/hriva/power-manager)
+
 # Objective
 This utilities automatize the energy handling in laptops without user interaction, for the 2 most common cases.
     - Plugging and unplugging the laptop to the AC
